@@ -44,6 +44,17 @@
         .no {
             background-color: #ff6666;
             position: relative;
+            transition: transform 0.5s ease;
+        }
+        .shrink {
+            transform: scale(0.5);
+        }
+        .spin {
+            animation: spin 1s linear;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .hidden-message, .gift-container {
             display: none;
@@ -79,7 +90,7 @@
     </div>
     <p id="timer"></p>
     <p id="thinking" style="display:none; font-size: 1.2rem; color: red;">Thinking too much? 🤔</p>
-    <p class="hidden-message">You are the love of my life! Thank you for coming into my life and changing it for good.You are the best thing that has ever happened. My only wish to make all your wishes come true . I love you  - Abhi ❤️</p>
+    <p class="hidden-message">You are the love of my life! Thank you for coming into my life and changing it for good. You are the best thing that has ever happened. My only wish is to make all your wishes come true. I love you - Abhi ❤️</p>
     <div class="gift-container">
         <p>🎁 Unlimited Kisses! 💋</p>
         <p>🎁 Unlimited Hugs! 🤗</p>
@@ -91,13 +102,13 @@
     <script>
         let noCount = 0;
         const noResponses = [
-            "Are you sure archie? 🥺", 
+            "Are you sure archie? 🥺",  
             "Really sure babe? 😢", 
             "Come on honey, don't break my heart 💔", 
             "I won't stop asking archie u know me! 😆",
-			"I promise i will always listen and fulfill all your wishes! pls?",
-			"Pleaseeeeeeee!",
-			"Please Archie 🥺"
+            "I promise I will always listen and fulfill all your wishes! pls?", 
+            "Pleaseeeeeeee!",
+            "Please Archie 🥺"
         ];
         let startTime = Date.now();
 
@@ -106,6 +117,14 @@
             noCount++;
             document.getElementById("sad-music").play();
             moveNoButton();
+            if (noCount > 5) {
+                const noButton = document.querySelector(".no");
+                noButton.classList.add("shrink");
+                if (noCount > 7) {
+                    noButton.classList.add("spin");
+                    setTimeout(() => noButton.style.display = "none", 1000);
+                }
+            }
         }
 
         function celebrate() {
@@ -127,23 +146,17 @@
         }
 
         function startHearts() {
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    let heart = document.createElement("div");
-                    heart.classList.add("heart");
-                    heart.innerHTML = "❤️";
-                    heart.style.left = Math.random() * 100 + "vw";
-                    heart.style.top = "100vh";
-                    document.body.appendChild(heart);
-                    setTimeout(() => heart.remove(), 4000);
-                }, i * 100);
+            for (let i = 0; i < 20; i++) {
+                let heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.innerText = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.top = "100vh";
+                heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
             }
         }
-
-        setTimeout(() => {
-            if (!document.querySelector(".hidden-message").style.display)
-                document.getElementById("thinking").style.display = "block";
-        }, 10000);
     </script>
 </body>
 </html>
