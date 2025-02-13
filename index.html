@@ -18,6 +18,17 @@
             overflow: hidden;
             position: relative;
         }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('your-image.jpg') no-repeat center center/cover;
+            filter: blur(10px) opacity(0.7);
+            z-index: -1;
+        }
         h1 {
             font-size: 2.5rem;
         }
@@ -83,7 +94,6 @@
 </head>
 <body>
     <h1>Will you be my Valentine?</h1>
-    <img id="profile-pic" src="your-image.jpg" alt="Your Picture">
     <div class="button-container">
         <button class="yes" onclick="celebrate()">Yes</button>
         <button class="no" onclick="askAgain()">No</button>
@@ -96,6 +106,7 @@
         <p>🎁 Unlimited Hugs! 🤗</p>
         <p>🎁 Unlimited Rounds! 🎟️</p>
         <p>🎁 A Trip of Your Choice! ❤️</p>
+       <p>Congratulations you have won all of the above</p>
     </div>
     <audio id="sad-music" src="sad-music.mp3"></audio>
     <audio id="happy-music" src="happy-music.mp3"></audio>
@@ -136,26 +147,6 @@
             document.querySelector(".gift-container").style.display = "block";
             document.querySelector(".no").disabled = true;
             startHearts();
-        }
-
-        function moveNoButton() {
-            const noButton = document.querySelector(".no");
-            noButton.style.position = "absolute";
-            noButton.style.top = Math.random() * 60 + 20 + "vh";
-            noButton.style.left = Math.random() * 60 + 20 + "vw";
-        }
-
-        function startHearts() {
-            for (let i = 0; i < 20; i++) {
-                let heart = document.createElement("div");
-                heart.classList.add("heart");
-                heart.innerText = "❤️";
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.top = "100vh";
-                heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }
         }
     </script>
 </body>
