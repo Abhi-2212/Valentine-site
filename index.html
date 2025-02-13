@@ -26,13 +26,10 @@
             border-radius: 50%;
             margin: 20px;
         }
-        .buttons {
+        .button-container {
             display: flex;
             gap: 20px;
-            position: relative;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
+            margin-top: 20px;
         }
         button {
             font-size: 1.5rem;
@@ -40,14 +37,13 @@
             border: none;
             cursor: pointer;
             border-radius: 10px;
-            position: relative;
         }
         .yes {
             background-color: #66cc66;
         }
         .no {
             background-color: #ff6666;
-            position: absolute;
+            position: relative;
         }
         canvas {
             position: fixed;
@@ -57,35 +53,15 @@
             height: 100vh;
             pointer-events: none;
         }
-        .hearts {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        .heart {
-            position: absolute;
-            bottom: 0;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 50% 80%, 20% 100%, 0% 35%);
-            animation: float 5s linear infinite;
-        }
-        @keyframes float {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-100vh); opacity: 0; }
-        }
     </style>
 </head>
 <body>
     <h1>Will you be my Valentine?</h1>
     <img id="profile-pic" src="your-image.jpg" alt="Your Picture">
-    <div class="buttons">
+    <div class="button-container">
         <button class="yes" onclick="celebrate()">Yes</button>
         <button class="no" onclick="askAgain()">No</button>
     </div>
-    <div class="hearts"></div>
     <audio id="sad-music" src="sad-music.mp3"></audio>
     <audio id="happy-music" src="happy-music.mp3"></audio>
     <canvas id="confetti"></canvas>
@@ -107,25 +83,13 @@
             document.getElementsByTagName("h1")[0].innerText = "YAY! 🎉";
             document.getElementById("happy-music").play();
             startConfetti();
-            createHearts();
-            setTimeout(stopConfetti, 10000); // Stop confetti after 10 seconds
+            setTimeout(stopConfetti, 10000);
         }
         function moveNoButton() {
             const noButton = document.querySelector(".no");
             noButton.style.position = "absolute";
             noButton.style.top = Math.random() * 60 + 20 + "vh";
             noButton.style.left = Math.random() * 60 + 20 + "vw";
-        }
-        function createHearts() {
-            const heartContainer = document.querySelector(".hearts");
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement("div");
-                heart.classList.add("heart");
-                heart.style.left = Math.random() * 100 + "vw";
-                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-                heartContainer.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }
         }
         const canvas = document.getElementById("confetti");
         const ctx = canvas.getContext("2d");
@@ -136,6 +100,7 @@
         let animationFrame;
 
         function createConfetti() {
+            confettiParticles = [];
             for (let i = 0; i < 100; i++) {
                 confettiParticles.push({
                     x: Math.random() * canvas.width,
@@ -170,4 +135,4 @@
     </script>
 </body>
 </html>
-
+a
