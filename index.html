@@ -45,13 +45,19 @@
             background-color: #ff6666;
             position: relative;
         }
-        canvas {
+        canvas, .heart-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             pointer-events: none;
+        }
+        .hidden-message, .gift-selection {
+            display: none;
+            font-size: 1.5rem;
+            color: #ff3366;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -62,9 +68,21 @@
         <button class="yes" onclick="celebrate()">Yes</button>
         <button class="no" onclick="askAgain()">No</button>
     </div>
+    <p id="timer"></p>
+    <p id="thinking" style="display:none; font-size: 1.2rem; color: red;">Thinking too much? 🤔</p>
+    <p class="hidden-message">You are the love of my life! ❤️</p>
+    <div class="gift-selection">
+        <p>Congratulations you can won  🎁</p>
+        <button onclick="chooseGift('Unlimited Kisses 💋')">Unlimited Kisses  💋</button>
+        <button onclick="chooseGift('Unlimited Hugs 🤗')">Unlimited Hugs 🤗</button>
+        <button onclick="chooseGift('Unlimited Rounds 🎟️')">Unlimited Rounds</button>
+        <button onclick="chooseGift('A Trip of your choice ❤️')">A Trip of your choice ❤️</button>
+    </div>
+    <p id="chosen-gift" style="display:none; font-size: 1.5rem; color: #ff3366;"></p>
     <audio id="sad-music" src="sad-music.mp3"></audio>
     <audio id="happy-music" src="happy-music.mp3"></audio>
     <canvas id="confetti"></canvas>
+    <div class="heart-container"></div>
     <script>
         let noCount = 0;
         const noResponses = [
@@ -73,66 +91,44 @@
             "Come on, don't break my heart 💔", 
             "I won't stop asking! 😆"
         ];
+        let startTime = Date.now();
+
         function askAgain() {
             document.getElementsByTagName("h1")[0].innerText = noResponses[noCount % noResponses.length];
             noCount++;
             document.getElementById("sad-music").play();
             moveNoButton();
         }
+
         function celebrate() {
+            let timeTaken = Math.floor((Date.now() - startTime) / 1000);
             document.getElementsByTagName("h1")[0].innerText = "YAY! 🎉";
             document.getElementById("happy-music").play();
+            document.getElementById("timer").innerText = `You took ${timeTaken} seconds to say YES! ❤️`;
+            document.querySelector(".hidden-message").style.display = "block";
+            document.querySelector(".gift-selection").style.display = "block";
             startConfetti();
+            startHearts();
             setTimeout(stopConfetti, 10000);
         }
+
+        function chooseGift(gift) {
+            document.getElementById("chosen-gift").innerText = `You chose: ${gift}`;
+            document.getElementById("chosen-gift").style.display = "block";
+        }
+
         function moveNoButton() {
             const noButton = document.querySelector(".no");
             noButton.style.position = "absolute";
             noButton.style.top = Math.random() * 60 + 20 + "vh";
             noButton.style.left = Math.random() * 60 + 20 + "vw";
         }
-        const canvas = document.getElementById("confetti");
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
 
-        let confettiParticles = [];
-        let animationFrame;
-
-        function createConfetti() {
-            confettiParticles = [];
-            for (let i = 0; i < 100; i++) {
-                confettiParticles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
-                    size: Math.random() * 10 + 5,
-                    speed: Math.random() * 3 + 2,
-                    angle: Math.random() * 360,
-                    color: `hsl(${Math.random() * 360}, 100%, 70%)`
-                });
-            }
-        }
-        function drawConfetti() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            confettiParticles.forEach(p => {
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-                p.y += p.speed;
-                if (p.y > canvas.height) p.y = -10;
-            });
-            animationFrame = requestAnimationFrame(drawConfetti);
-        }
-        function startConfetti() {
-            createConfetti();
-            drawConfetti();
-        }
-        function stopConfetti() {
-            cancelAnimationFrame(animationFrame);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
+        setTimeout(() => {
+            if (!document.querySelector(".hidden-message").style.display)
+                document.getElementById("thinking").style.display = "block";
+        }, 10000);
     </script>
 </body>
 </html>
-a
+
