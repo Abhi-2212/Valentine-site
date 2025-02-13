@@ -45,19 +45,28 @@
             background-color: #ff6666;
             position: relative;
         }
-        canvas, .heart-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-        }
-        .hidden-message, .gift-selection {
+        .hidden-message, .gift-container {
             display: none;
             font-size: 1.5rem;
             color: #ff3366;
             margin-top: 20px;
+        }
+        .gift-container p {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            margin: 5px 0;
+        }
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            color: red;
+            animation: floatUp 4s linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
         }
     </style>
 </head>
@@ -70,26 +79,25 @@
     </div>
     <p id="timer"></p>
     <p id="thinking" style="display:none; font-size: 1.2rem; color: red;">Thinking too much? 🤔</p>
-    <p class="hidden-message">You are the love of my life! ❤️</p>
-    <div class="gift-selection">
-        <p>Congratulations you can won  🎁</p>
-        <button onclick="chooseGift('Unlimited Kisses 💋')">Unlimited Kisses  💋</button>
-        <button onclick="chooseGift('Unlimited Hugs 🤗')">Unlimited Hugs 🤗</button>
-        <button onclick="chooseGift('Unlimited Rounds 🎟️')">Unlimited Rounds</button>
-        <button onclick="chooseGift('A Trip of your choice ❤️')">A Trip of your choice ❤️</button>
+    <p class="hidden-message">You are the love of my life! Thank you for coming into my life and changing it for good.You are the best thing that has ever happened. My only wish to make all your wishes come true . I love you  - Abhi ❤️</p>
+    <div class="gift-container">
+        <p>🎁 Unlimited Kisses! 💋</p>
+        <p>🎁 Unlimited Hugs! 🤗</p>
+        <p>🎁 Unlimited Rounds! 🎟️</p>
+        <p>🎁 A Trip of Your Choice! ❤️</p>
     </div>
-    <p id="chosen-gift" style="display:none; font-size: 1.5rem; color: #ff3366;"></p>
     <audio id="sad-music" src="sad-music.mp3"></audio>
     <audio id="happy-music" src="happy-music.mp3"></audio>
-    <canvas id="confetti"></canvas>
-    <div class="heart-container"></div>
     <script>
         let noCount = 0;
         const noResponses = [
-            "Are you sure? 🥺", 
-            "Really sure? 😢", 
-            "Come on, don't break my heart 💔", 
-            "I won't stop asking! 😆"
+            "Are you sure archie? 🥺", 
+            "Really sure babe? 😢", 
+            "Come on honey, don't break my heart 💔", 
+            "I won't stop asking archie u know me! 😆",
+			"I promise i will always listen and fulfill all your wishes! pls?",
+			"Pleaseeeeeeee!",
+			"Please Archie 🥺"
         ];
         let startTime = Date.now();
 
@@ -106,15 +114,9 @@
             document.getElementById("happy-music").play();
             document.getElementById("timer").innerText = `You took ${timeTaken} seconds to say YES! ❤️`;
             document.querySelector(".hidden-message").style.display = "block";
-            document.querySelector(".gift-selection").style.display = "block";
-            startConfetti();
+            document.querySelector(".gift-container").style.display = "block";
+            document.querySelector(".no").disabled = true;
             startHearts();
-            setTimeout(stopConfetti, 10000);
-        }
-
-        function chooseGift(gift) {
-            document.getElementById("chosen-gift").innerText = `You chose: ${gift}`;
-            document.getElementById("chosen-gift").style.display = "block";
         }
 
         function moveNoButton() {
@@ -122,6 +124,20 @@
             noButton.style.position = "absolute";
             noButton.style.top = Math.random() * 60 + 20 + "vh";
             noButton.style.left = Math.random() * 60 + 20 + "vw";
+        }
+
+        function startHearts() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    let heart = document.createElement("div");
+                    heart.classList.add("heart");
+                    heart.innerHTML = "❤️";
+                    heart.style.left = Math.random() * 100 + "vw";
+                    heart.style.top = "100vh";
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 100);
+            }
         }
 
         setTimeout(() => {
